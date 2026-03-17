@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
@@ -45,7 +45,7 @@ INSTALL_DIR="$HOME/.local/bin"
 mkdir -p "$INSTALL_DIR"
 
 cat > "$INSTALL_DIR/loudio" << EOF
-#!/usr/bin/bash
+#!/usr/bin/env bash
 source "$SCRIPT_DIR/.venv/bin/activate"
 exec python3 "$SCRIPT_DIR/main.py" "\$@"
 EOF

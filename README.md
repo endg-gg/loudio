@@ -1,4 +1,4 @@
-# loudio
+# Loudio
 
 Cross-platform audio streaming over UDP with Opus encoding. Stream system audio from any client (Linux/Windows) to a server receiver.
 

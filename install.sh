@@ -18,7 +18,7 @@ fi
 # Install system deps
 echo "Installing system dependencies..."
 if command -v apt &> /dev/null; then
-    sudo apt install -y libopus-dev portaudio19-dev
+    sudo apt install -y libopus-dev portaudio19-dev python3-venv
 elif command -v pacman &> /dev/null; then
     sudo pacman -S --noconfirm opus portaudio
 elif command -v dnf &> /dev/null; then

@@ -14,7 +14,7 @@ def run_server(host="0.0.0.0", port=PORT, output_device=None):
     sock.bind((host, port))
     print(f"[loudio server] Listening on {host}:{port}")
 
-    stream = sd.OutputStream(samplerate=RATE, channels=CHANNELS, dtype='int16', device=output_device)
+    stream = sd.RawOutputStream(samplerate=RATE, channels=CHANNELS, dtype='int16', device=output_device)
     stream.start()
 
     try:

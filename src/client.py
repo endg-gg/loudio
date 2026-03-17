@@ -14,13 +14,12 @@ def run_client(server_ip, port=PORT, input_device=None):
     print(f"[loudio client] Streaming to {server_ip}:{port}")
 
     def callback(indata, frames, time, status):
-        pcm = indata.tobytes()
-        encoded = encoder.encode(pcm, CHUNK)
+        encoded = encoder.encode(bytes(indata), CHUNK)
         sock.sendto(encoded, (server_ip, port))
 
     try:
-        with sd.InputStream(samplerate=RATE, channels=CHANNELS, dtype='int16',
-                            blocksize=CHUNK, callback=callback, device=input_device):
+        with sd.RawInputStream(samplerate=RATE, channels=CHANNELS, dtype='int16',
+                               blocksize=CHUNK, callback=callback, device=input_device):
             print("[loudio client] Streaming... Ctrl+C to stop")
             while True:
                 pass

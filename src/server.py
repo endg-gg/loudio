@@ -1,6 +1,5 @@
 import socket
 import sounddevice as sd
-import numpy as np
 import opuslib
 
 RATE = 48000
@@ -22,8 +21,7 @@ def run_server(host="0.0.0.0", port=PORT, output_device=None):
         while True:
             data, addr = sock.recvfrom(4096)
             pcm = decoder.decode(data, CHUNK)
-            audio = np.frombuffer(pcm, dtype='int16')
-            stream.write(audio)
+            stream.write(pcm)
     except KeyboardInterrupt:
         print("\n[loudio server] Stopped.")
     finally:

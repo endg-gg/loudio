@@ -34,21 +34,21 @@ loudio server --host 0.0.0.0 --port 4455
 
 ### Client (transmitter)
 ```bash
-# Stream default input
+# Auto-detects loopback/monitor device by default (system audio, not mic)
 loudio client --host <server-ip>
 
-# Stream specific device by index
+# Override with specific device index
+loudio --list-devices
 loudio client --host <server-ip> --device 3
-
-# Auto-detect loopback/monitor device (capture system audio)
-loudio client --host <server-ip> --auto-loopback
 ```
 
 ## Capturing System Audio (Loopback)
 
-**Linux:** Run `loudio --list-devices` and find the `Monitor of ...` device, pass its index with `--device`.
+By default, loudio auto-detects the loopback/monitor device to capture system audio (browser, music, etc.) instead of the microphone.
 
-**Windows:** Find `Stereo Mix` or WASAPI loopback device via `--list-devices`, pass with `--device`.
+**Linux:** If no loopback device is found, enable the monitor sink via `pavucontrol` → Recording tab.
+
+**Windows:** Enable `Stereo Mix` in Sound settings → Recording devices.
 
 ## License
 

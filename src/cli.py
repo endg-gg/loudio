@@ -15,7 +15,7 @@ def main():
     parser.add_argument("--port", type=int, default=4455, help="UDP port (default: 4455)")
     parser.add_argument("--device", type=int, default=None, help="Audio device index")
     parser.add_argument("--list-devices", action="store_true", help="List available audio devices and exit")
-    parser.add_argument("--auto-loopback", action="store_true", help="Auto-detect loopback device (client mode)")
+
 
     args = parser.parse_args()
 
@@ -31,10 +31,12 @@ def main():
         run_server(host=args.host, port=args.port, output_device=args.device)
     elif args.mode == "client":
         device = args.device
-        if args.auto_loopback and device is None:
+        if device is None:
             device = find_loopback_device()
             if device is not None:
-                print(f"[loudio] Auto-detected loopback device: {device}")
+                print(f"[loudio] Using loopback device: {device}")
             else:
-                print("[loudio] No loopback device found, using default input.")
+                print("[loudio] No loopback device found. Use --device to specify one.")
+                list_devices()
+                sys.exit(1)
         run_client(server_ip=args.host, port=args.port, input_device=device)

@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "loudio=main:main",
+            "loudio=cli:main",
         ],
     },
     python_requires=">=3.8",

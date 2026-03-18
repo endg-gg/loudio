@@ -17,25 +17,18 @@ def run_client(server_ip, port=PORT, input_device=None):
 
     def callback(indata, frames, time, status):
         nonlocal packet_count
-        if status:
-            print(f"[loudio client] Stream status: {status}")
-        raw = bytes(indata)
-        amplitude = max(abs(int.from_bytes(raw[i:i+2], 'little', signed=True)) for i in range(0, min(len(raw), 64), 2))
-        encoded = encoder.encode(raw, CHUNK)
-        sock.sendto(encoded, (server_ip, port))
+        sock.sendto(encoder.encode(bytes(indata), CHUNK), (server_ip, port))
         packet_count += 1
         if packet_count % 500 == 0:
-            print(f"[loudio client] {packet_count} packets sent, amplitude={amplitude}, encoded={len(encoded)}b")
-
-
+            print(f"[loudio client] {packet_count} packets sent")
 
     try:
         with sd.RawInputStream(samplerate=RATE, channels=CHANNELS, dtype='int16',
                                blocksize=CHUNK, callback=callback, device=input_device):
-            print(f"[loudio client] Streaming... device={input_device} {RATE}Hz {CHANNELS}ch. Ctrl+C to stop")
+            print("[loudio client] Streaming... Ctrl+C to stop")
             while True:
                 pass
     except KeyboardInterrupt:
-        print(f"\n[loudio client] Stopped. Total packets sent: {packet_count}")
+        print(f"\n[loudio client] Stopped. Total: {packet_count} packets")
     finally:
         sock.close()

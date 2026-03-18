@@ -16,7 +16,6 @@ def run_server(host="0.0.0.0", port=PORT, output_device=None):
 
     stream = sd.RawOutputStream(samplerate=RATE, channels=CHANNELS, dtype='int16', device=output_device)
     stream.start()
-    print(f"[loudio server] Output stream started: {RATE}Hz {CHANNELS}ch device={output_device}")
 
     known_clients = set()
     packet_count = 0
@@ -28,15 +27,12 @@ def run_server(host="0.0.0.0", port=PORT, output_device=None):
                 known_clients.add(addr)
                 print(f"[loudio server] Client connected: {addr[0]}:{addr[1]}")
             packet_count += 1
-            try:
-                pcm = decoder.decode(data, CHUNK)
-                stream.write(pcm)
-                if packet_count % 500 == 0:
-                    print(f"[loudio server] {packet_count} packets received, pcm_len={len(pcm)}")
-            except Exception as e:
-                print(f"[loudio server] Decode/write error: {e} (packet_size={len(data)})")
+            if packet_count % 500 == 0:
+                print(f"[loudio server] {packet_count} packets received")
+            pcm = decoder.decode(data, CHUNK)
+            stream.write(pcm)
     except KeyboardInterrupt:
-        print(f"\n[loudio server] Stopped. Total packets: {packet_count}")
+        print(f"\n[loudio server] Stopped. Total: {packet_count} packets")
     finally:
         stream.stop()
         sock.close()

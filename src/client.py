@@ -1,5 +1,4 @@
 import socket
-import numpy as np
 import sounddevice as sd
 import opuslib
 
@@ -21,7 +20,7 @@ def run_client(server_ip, port=PORT, input_device=None):
         if status:
             print(f"[loudio client] Stream status: {status}")
         raw = bytes(indata)
-        amplitude = int(np.abs(np.frombuffer(raw, dtype='int16')).max())
+        amplitude = max(abs(int.from_bytes(raw[i:i+2], 'little', signed=True)) for i in range(0, min(len(raw), 64), 2))
         encoded = encoder.encode(raw, CHUNK)
         sock.sendto(encoded, (server_ip, port))
         packet_count += 1

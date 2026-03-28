@@ -1,4 +1,5 @@
 import socket
+import threading
 import sounddevice as sd
 import opuslib
 
@@ -26,8 +27,7 @@ def run_client(server_ip, port=PORT, input_device=None):
         with sd.RawInputStream(samplerate=RATE, channels=CHANNELS, dtype='int16',
                                blocksize=CHUNK, callback=callback, device=input_device):
             print("[loudio client] Streaming... Ctrl+C to stop")
-            while True:
-                pass
+            threading.Event().wait()
     except KeyboardInterrupt:
         print(f"\n[loudio client] Stopped. Total: {packet_count} packets")
     finally:
